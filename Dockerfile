@@ -25,11 +25,13 @@ RUN apt-get update && apt-get -y install \
   libssl-dev \
   nano \
   perl \
-  wget
+  wget && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Compile openresty from source.
 RUN \
-  wget http://openresty.org/download/ngx_openresty-1.7.7.1.tar.gz && \
+  wget http://openresty.org/download/ngx_openresty-1.7.10.1.tar.gz && \
   tar -xzvf ngx_openresty-*.tar.gz && \
   rm -f ngx_openresty-*.tar.gz && \
   cd ngx_openresty-* && \
@@ -53,6 +55,9 @@ VOLUME ["/etc/nginx"]
 
 # Set the entrypoint script.
 ENTRYPOINT ["./entrypoint"]
+
+# Expose ports
+EXPOSE 80 443
 
 # Define the default command.
 CMD ["nginx", "-c", "/etc/nginx/nginx.conf"]
